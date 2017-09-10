@@ -20,14 +20,21 @@ test('Creating a game should result in burned cards, one card plus an array the 
 
     const burnedCards = game.burnedCards;
 
-    console.log(burnedCards);
-
     const val = burnedCards.firstCard.actualVal;
 
     expect(burnedCards.burnCards.length).toEqual(val);
 
     expect(game.positionInDeck).toBe(val + 1);
 
+});
+
+test('Creating a game should result in a stop-at position between 15-22% of the deck', () => {
+    const game = new Game(playingCards);
+
+    const penetration = game.stopAt / game.cards.length;
+
+    expect(penetration).toBeGreaterThan(.14);
+    expect(penetration).toBeLessThan(.23);
 });
 
 test('The first burned card in the burned card array shouldn\'t be the first card drawn', () => {
