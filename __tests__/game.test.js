@@ -88,6 +88,7 @@ test('checkTotal should make score less than 10', () => {
     game.checkTotal();
 
     expect(game.playerHand.total).toBe(6);
+    
     expect(game.bankerHand.total).toBe(3);
 
 });
