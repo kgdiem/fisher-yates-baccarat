@@ -37,19 +37,6 @@ test('Creating a game should result in a stop-at position between 15-22% of the 
     expect(penetration).toBeLessThan(.23);
 });
 
-test('The first burned card in the burned card array shouldn\'t be the first card drawn', () => {
-    const game = new Game(playingCards);
-
-    const burnedCards = game.burnedCards;
-
-    const firstBurnedCard = burnedCards.burnCards[0];
-
-    const cardIsDifferent = (burnedCards.firstCard.val != firstBurnedCard.val || burnedCards.firstCard.suite != firstBurnedCard.suite);
-
-    expect(cardIsDifferent).toEqual(true);
-
-});
-
 test('Make hand should return an object w/ total of 0 and an empty array for cards', () => {
     const game = new Game(playingCards);
 
@@ -88,4 +75,19 @@ test('Dealing cards should result in player totals of less than 10', () => {
     }
 
     expect(isAlwaysLessThan10).toEqual(true);
+});
+
+test('checkTotal should make score less than 10', () => {
+    const game = new Game(playingCards);
+
+    game.deal();
+
+    game.playerHand.total = 15;
+    game.bankerHand.total = 12;
+
+    game.checkTotal();
+
+    expect(game.playerHand.total).toBe(6);
+    expect(game.bankerHand.total).toBe(3);
+
 });
