@@ -92,3 +92,44 @@ test('checkTotal should make score less than 10', () => {
     expect(game.bankerHand.total).toBe(3);
 
 });
+
+test('checkNaturalWin returns true when there is a natural win', () => {
+    const game = new Game(playingCards);
+
+    game.deal();
+
+    game.playerHand.total = 9;
+    game.bankerHand.total = 8;
+
+    expect(game.checkNaturalWin()).toEqual(true);
+    expect(game.playerHand.win).toEqual(true);
+
+    game.bankerHand.total = 8;
+    game.playerHand.total = 7;
+
+    expect(game.checkNaturalWin()).toEqual(true);
+    expect(game.bankerHand.win).toBe(true);
+
+});
+
+test('checkNaturalWin returns false when there is a natural win', () => {
+    const game = new Game(playingCards);
+    
+    game.deal();
+
+    game.playerHand.total = 0;
+    game.bankerHand.total = 1;
+
+    expect(game.checkNaturalWin()).toEqual(false);
+
+    expect(game.playerHand.win).toBe(undefined);
+    expect(game.bankerHand.win).toBe(undefined);
+
+    game.bankerHand.total = 1;
+    game.playerHand.total = 0;
+
+    expect(game.checkNaturalWin()).toEqual(false);
+    expect(game.playerHand.win).toBe(undefined);
+    expect(game.bankerHand.win).toBe(undefined);
+    
+});
