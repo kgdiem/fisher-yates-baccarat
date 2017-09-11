@@ -85,7 +85,8 @@ test('checkTotal should make score less than 10', () => {
     game.playerHand.total = 15;
     game.bankerHand.total = 12;
 
-    game.checkTotal();
+    game.checkTotal(game.playerHand);
+    game.checkTotal(game.bankerHand);
 
     expect(game.playerHand.total).toBe(5);
     
@@ -94,7 +95,8 @@ test('checkTotal should make score less than 10', () => {
     game.playerHand.total = 11;
     game.bankerHand.total = 8;
 
-    game.checkTotal();
+    game.checkTotal(game.playerHand);
+    game.checkTotal(game.bankerHand);
 
     expect(game.playerHand.total).toBe(1);
     
@@ -103,7 +105,8 @@ test('checkTotal should make score less than 10', () => {
     game.playerHand.total = 18;
     game.bankerHand.total = 14;
 
-    game.checkTotal();
+    game.checkTotal(game.playerHand);
+    game.checkTotal(game.bankerHand);
 
     expect(game.playerHand.total).toBe(8);
     
@@ -112,7 +115,8 @@ test('checkTotal should make score less than 10', () => {
     game.playerHand.total = 10;
     game.bankerHand.total = 9;
 
-    game.checkTotal();
+    game.checkTotal(game.playerHand);
+    game.checkTotal(game.bankerHand);
 
     expect(game.playerHand.total).toBe(0);
     
@@ -240,4 +244,133 @@ test('addHistory should add correct history', () => {
     
     expect(game.history[1].playerHand).toEqual(game.playerHand);
     expect(game.history[1].bankerHand).toEqual(game.bankerHand);
+});
+
+test('dealExtraCards should add an extra card when playerHand.total is less than 6', () => {
+    const game = new Game(playingCards);
+
+    game.deal();
+
+    game.playerHand.total = 5;
+
+    game.dealExtraCards();
+
+    expect(game.playerHand.cards.length).toEqual(3);
+});
+
+test('dealExtraCards should return true when playerHand.total is less than bankerHand.total after drawing the first card', () => {
+    let game = new Game(playingCards);
+
+    game.deal();
+
+    game.playerHand.total = 0;
+
+    game.bankerHand.total = 9;
+
+    game.drawCard = () => ({actualVal: 1});
+
+    const roundEnded = game.dealExtraCards();
+
+    expect(roundEnded).toBe(true);
+
+});
+
+test('dealExtraCards should add an extra card to the bankerHand when playerHand > 5 and bankerHand < 6', () => {
+    const game = new Game(playingCards);
+    
+    game.deal();
+
+    game.playerHand.total = 9;
+
+    game.bankerHand.total = 0;
+
+    game.dealExtraCards();
+
+    expect(game.bankerHand.cards.length).toEqual(3);
+    expect(game.playerHand.cards.length).toEqual(2);
+
+});
+
+test('dealExtraCards should add an extra card to the bankerHand when a player card has been added and the banker total is less than 3', () => {
+    let game = new Game(playingCards);
+
+    game.deal();
+
+    game.playerHand.total = 0;
+    game.bankerHand.total = 0;
+
+    game.dealExtraCards();
+
+    expect(game.bankerHand.cards.length).toEqual(3);
+    expect(game.playerHand.cards.length).toEqual(3);
+
+});
+
+test('dealExtraCards should deal extra card to banker when bankerTotal is 3 and playerCard != 8', () =>{
+    let game = new Game(playingCards);
+
+    game.deal();
+
+    game.drawCard = () => ({actualVal: 3});
+
+    game.playerHand.total = 3;
+
+    game.bankerHand.total = 3;
+
+    game.dealExtraCards();
+
+    expect(game.bankerHand.cards.length).toEqual(3);
+    expect(game.playerHand.cards.length).toEqual(3);
+
+});
+
+test('dealExtraCards should deal an extra card when bankerHand is 4 and playerCard > 1 and < 8', () => {
+    let game = new Game(playingCards);
+    
+    game.deal();
+
+    game.drawCard = () => ({actualVal: 3});
+
+    game.playerHand.total = 3;
+
+    game.bankerHand.total = 4;
+
+    game.dealExtraCards();
+
+    expect(game.bankerHand.cards.length).toEqual(3);
+    expect(game.playerHand.cards.length).toEqual(3);
+});
+
+test('dealExtraCards should deal an extra card when bankerHand is 5 and playerCard > 3 and < 8', () => {
+    let game = new Game(playingCards);
+    
+    game.deal();
+
+    game.drawCard = () => ({actualVal: 4});
+
+    game.playerHand.total = 3;
+
+    game.bankerHand.total = 5;
+
+    game.dealExtraCards();
+
+    expect(game.bankerHand.cards.length).toEqual(3);
+    expect(game.playerHand.cards.length).toEqual(3);
+});
+
+test('dealExtraCards should deal an extra card when bankerHand is 6 and playerCard > 5 and < 8', () => {
+    let game = new Game(playingCards);
+    
+        game.deal();
+    
+        game.drawCard = () => ({actualVal: 7});
+    
+        game.playerHand.total = 7;
+    
+        game.bankerHand.total = 6;
+    
+        game.dealExtraCards();
+    
+        expect(game.bankerHand.cards.length).toEqual(3);
+        expect(game.playerHand.cards.length).toEqual(2);
 });
