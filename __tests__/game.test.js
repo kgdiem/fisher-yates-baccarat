@@ -227,3 +227,17 @@ test('dealHand should add a card to the hand and increment total', () => {
     expect(game.playerHand.cards[2]).toBe(nextCard);
 
 });
+
+test('addHistory should add correct history', () => {
+    const game = new Game(playingCards);
+
+    game.dealRound();
+
+    expect(game.history[0].playerHand).toEqual(game.playerHand);
+    expect(game.history[0].bankerHand).toEqual(game.bankerHand);
+
+    game.dealRound();
+    
+    expect(game.history[1].playerHand).toEqual(game.playerHand);
+    expect(game.history[1].bankerHand).toEqual(game.bankerHand);
+});
