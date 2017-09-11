@@ -87,9 +87,36 @@ test('checkTotal should make score less than 10', () => {
 
     game.checkTotal();
 
-    expect(game.playerHand.total).toBe(6);
+    expect(game.playerHand.total).toBe(5);
     
-    expect(game.bankerHand.total).toBe(3);
+    expect(game.bankerHand.total).toBe(2);
+
+    game.playerHand.total = 11;
+    game.bankerHand.total = 8;
+
+    game.checkTotal();
+
+    expect(game.playerHand.total).toBe(1);
+    
+    expect(game.bankerHand.total).toBe(8);
+
+    game.playerHand.total = 18;
+    game.bankerHand.total = 14;
+
+    game.checkTotal();
+
+    expect(game.playerHand.total).toBe(8);
+    
+    expect(game.bankerHand.total).toBe(4);
+
+    game.playerHand.total = 10;
+    game.bankerHand.total = 9;
+
+    game.checkTotal();
+
+    expect(game.playerHand.total).toBe(0);
+    
+    expect(game.bankerHand.total).toBe(9);
 
 });
 
@@ -131,5 +158,47 @@ test('checkNaturalWin returns false when there is a natural win', () => {
     expect(game.checkNaturalWin()).toEqual(false);
     expect(game.playerHand.win).toBe(undefined);
     expect(game.bankerHand.win).toBe(undefined);
+
+});
+
+test('dealRound should return false if stopAt is greater than or equal to the current position in the deck', () =>{
+    const game = new Game(playingCards);
+
+    game.stopAt = 416;
+
+    expect(game.dealRound()).toEqual(false);
+});
+
+test('dealRound should result in a history object', () => {
+    const game = new Game(playingCards);
+
+    game.dealRound();
+
+    expect(game.history.length).toEqual(1);
+
+});
+
+test('dealRound should have correct winner', () => {
+    const game = new Game(playingCards);
     
+    let i = 0;
+    let historyObj;
+
+    while(game.dealRound() !== false){
+
+        historyObj = game.history[i];
+
+        if(historyObj.winner == 'tie'){
+            expect(historyObj.bankerHand.total).toEqual(historyObj.playerHand.total);
+        }
+        else if(historyObj.winner == 'player'){
+            expect(historyObj.bankerHand.total).toBeLessThan(historyObj.playerHand.total);
+        }
+        else{
+            expect(historyObj.bankerHand.total).toBeGreaterThan(historyObj.playerHand.total);
+        }
+
+        i++;
+    }
+
 });
