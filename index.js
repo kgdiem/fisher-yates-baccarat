@@ -19,6 +19,8 @@ while(game.dealRound() !== false){
     console.log(histObj.playerHand.cards);
     console.log(`Player total: ${histObj.playerHand.total}`);
 
+    console.log();
+    
     console.log("Banker hand: ");
     console.log(histObj.bankerHand.cards);
     console.log(`Banker total: ${histObj.bankerHand.total}`);
