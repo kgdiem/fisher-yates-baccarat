@@ -365,12 +365,12 @@ test('dealExtraCards should deal an extra card when bankerHand is 6 and playerCa
     
         game.drawCard = () => ({actualVal: 7});
     
-        game.playerHand.total = 7;
+        game.playerHand.total = 2;
     
         game.bankerHand.total = 6;
     
         game.dealExtraCards();
     
         expect(game.bankerHand.cards.length).toEqual(3);
-        expect(game.playerHand.cards.length).toEqual(2);
+        expect(game.playerHand.cards.length).toEqual(3);
 });
