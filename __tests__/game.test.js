@@ -202,3 +202,28 @@ test('dealRound should have correct winner', () => {
     }
 
 });
+
+test('dealHand should add a card to the hand and increment total', () => {
+
+    const game = new Game(playingCards);
+
+    game.deal();
+
+    const nextCard = game.cards[game.positionInDeck];
+
+    const totalBeforeIncrementing = game.playerHand.total;
+    const cardsBeforeIncrementing = game.playerHand.cards;
+
+    let nextTotal = nextCard.actualVal + totalBeforeIncrementing;
+
+    if(nextTotal >= 10){
+        nextTotal = nextTotal - 10;
+    }
+    
+    game.dealCard(game.playerHand);
+
+    expect(game.playerHand.total).toEqual(nextTotal);
+
+    expect(game.playerHand.cards[2]).toBe(nextCard);
+
+});
