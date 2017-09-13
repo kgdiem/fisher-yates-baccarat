@@ -135,8 +135,20 @@ test('checkNaturalWin returns true when there is a natural win', () => {
     expect(game.checkNaturalWin()).toEqual(true);
     expect(game.playerHand.win).toEqual(true);
 
+    game.playerHand.total = 8;
+    game.bankerHand.total = 9;
+
+    expect(game.checkNaturalWin()).toEqual(true);
+    expect(game.playerHand.win).toEqual(true);
+
     game.bankerHand.total = 8;
     game.playerHand.total = 7;
+
+    expect(game.checkNaturalWin()).toEqual(true);
+    expect(game.bankerHand.win).toBe(true);
+
+    game.bankerHand.total = 9;
+    game.playerHand.total = 8;
 
     expect(game.checkNaturalWin()).toEqual(true);
     expect(game.bankerHand.win).toBe(true);
