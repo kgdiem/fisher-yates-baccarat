@@ -506,12 +506,28 @@ test('dealExtraCards should deal banker an extra card when banker has 3 and play
     game.bankerHand.total = 3;
 
     game.drawCard = () => ({actualVal: 1});
-    
+
     game.dealExtraCards();
 
     expect(game.playerHand.cards.length).toEqual(3);
     expect(game.bankerHand.cards.length).toEqual(3);
     
+});
+
+test('dealExtraCards should deal banker an extra card when player total is less than banker total and banker total is less than 3', () =>{
+    let game = new Game(playingCards);
+
+    game.deal();
+
+    game.playerHand.total = 0;
+    game.bankerHand.total = 0;
+
+    game.drawCard = () => ({actualVal: 0});
+
+    game.dealExtraCards();
+
+    expect(game.playerHand.cards.length).toEqual(3);
+    expect(game.bankerHand.cards.length).toEqual(3);
 });
 
 test('dealExtraCards should not deal banker an extra card when banker has 3 and player\'s third card is an 8', () => {
