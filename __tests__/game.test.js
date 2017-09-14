@@ -419,7 +419,7 @@ test('dealExtraCards should deal banker an extra card', () => {
     game.bankerHand.total = 2;
 
     game.dealExtraCards();
-    
+
     expect(game.bankerHand.cards.length).toEqual(3);
     expect(game.playerHand.cards.length).toEqual(3);
 
