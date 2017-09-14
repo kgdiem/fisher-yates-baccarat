@@ -395,15 +395,11 @@ test('dealExtraCards should deal banker an extra card', () => {
     game.playerHand.total = 3;
     game.bankerHand.total = 0;
 
-    let bankerTotalBefore = 0;
-
     game.dealExtraCards();
 
-    if(game.playerHand.total < bankerTotalBefore){
-        expect(game.bankerHand.cards.length).toEqual(2);
-    }else{
-        expect(game.bankerHand.cards.length).toEqual(3);
-    }
+
+    expect(game.bankerHand.cards.length).toEqual(3);
+
     expect(game.playerHand.cards.length).toEqual(3);
     
     game.deal();
@@ -411,15 +407,10 @@ test('dealExtraCards should deal banker an extra card', () => {
     game.playerHand.total = 3;
     game.bankerHand.total = 1;
 
-    bankerTotalBefore = 1;
-
     game.dealExtraCards();
     
-    if(game.playerHand.total < bankerTotalBefore){
-        expect(game.bankerHand.cards.length).toEqual(2);
-    }else{
-        expect(game.bankerHand.cards.length).toEqual(3);
-    }
+    expect(game.bankerHand.cards.length).toEqual(3);
+
     expect(game.playerHand.cards.length).toEqual(3);
 
     game.deal();
@@ -427,16 +418,20 @@ test('dealExtraCards should deal banker an extra card', () => {
     game.playerHand.total = 3;
     game.bankerHand.total = 2;
 
-    bankerTotalBefore = 2;
+    game.dealExtraCards();
+
+
+    expect(game.bankerHand.cards.length).toEqual(3);
+
+    game.deal();
+
+    game.playerHand.total = 0;
+    game.bankerHand.total = 2;
 
     game.dealExtraCards();
 
-    if(game.playerHand.total < bankerTotalBefore){
-        expect(game.bankerHand.cards.length).toEqual(2);
-    }else{
-        expect(game.bankerHand.cards.length).toEqual(3);
-    }
 
+    expect(game.bankerHand.cards.length).toEqual(3);
     expect(game.playerHand.cards.length).toEqual(3);
 
     game.deal();
@@ -458,5 +453,47 @@ test('dealExtraCards should deal banker an extra card', () => {
 
     expect(game.bankerHand.cards.length).toEqual(3);
     expect(game.playerHand.cards.length).toEqual(2);
+
+    game.deal();
+    
+    game.playerHand.total = 3;
+    game.bankerHand.total = 3;
+
+    const drawCard = game.drawCard;
+
+    game.drawCard = () => ({actualVal: 1});
+
+    game.dealExtraCards();
+
+    game.drawCard = drawCard;
+
+    expect(game.playerHand.cards.length).toEqual(3);
+    expect(game.bankerHand.cards.length).toEqual(3);
+
+    game.deal();
+    
+    game.playerHand.total = 5;
+    game.bankerHand.total = 3;
+
+    game.drawCard = () => ({actualVal: 1});
+    game.dealExtraCards();
+    game.drawCard = drawCard;
+
+    expect(game.playerHand.cards.length).toEqual(3);
+    expect(game.bankerHand.cards.length).toEqual(3);
+    
+
+
+    game.deal();
+
+    game.playerHand.total = 3;
+    game.bankerHand.total = 3;
+
+    game.drawCard = () => ({actualVal: 8});
+
+    game.dealExtraCards();
+
+    expect(game.playerHand.cards.length).toEqual(3);
+    expect(game.bankerHand.cards.length).toEqual(2);
 
 });
