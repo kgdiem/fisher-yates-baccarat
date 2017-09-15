@@ -546,3 +546,27 @@ test('dealExtraCards should not deal banker an extra card when banker has 3 and 
     expect(game.bankerHand.cards.length).toEqual(2);
 
 });
+
+test('burnCards should burn 10 cards when a 10, J, Q, K, A is drawn', () => {
+    const drawCard = Game.prototype.drawCard;
+
+    Game.prototype.drawCard = () => ({actualVal: 0});
+
+    const game = new Game(playingCards);
+
+    expect(game.burnedCards.burnCards.length).toBe(10);
+
+    Game.prototype.drawCard = drawCard;
+});
+
+test('burnCards should burn value of first card when non-10 card is drawn', () => {
+    const drawCard = Game.prototype.drawCard;
+
+    Game.prototype.drawCard = () => ({actualVal: 3});
+
+    const game = new Game(playingCards);
+
+    expect(game.burnedCards.burnCards.length).toBe(3);
+
+    Game.prototype.drawCard = drawCard;
+});
