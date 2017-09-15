@@ -29,6 +29,15 @@ test('Creating a game should result in burned cards, one card plus an array the 
         expect(burnedCards.burnCards.length).toEqual(10);
     }
 
+});
+
+test('Creating a game should result in the position in the deck to be after the burned cards', () => {
+    const game = new Game(playingCards);
+
+    const burnedCards = game.burnedCards;
+
+    const val = burnedCards.firstCard.actualVal;
+
     expect(game.positionInDeck).toBe(val + 1);
 
 });
