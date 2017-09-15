@@ -22,7 +22,12 @@ test('Creating a game should result in burned cards, one card plus an array the 
 
     const val = burnedCards.firstCard.actualVal;
 
-    expect(burnedCards.burnCards.length).toEqual(val);
+    if(val != 0){
+        expect(burnedCards.burnCards.length).toEqual(val);
+    }
+    else{
+        expect(burnedCards.burnCards.length).toEqual(10);
+    }
 
     expect(game.positionInDeck).toBe(val + 1);
 
